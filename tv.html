@@ -770,28 +770,25 @@
     }
 
     function scaleTV() {
-      const app = document.getElementById("app");
-      if (!app) return;
+  const app = document.getElementById("app");
+  if (!app) return;
 
-      const screenWidth = window.innerWidth;
-      const screenHeight = window.innerHeight;
+  // 🔥 SCALE FIXE TV (ajuste si besoin)
+  const scale = 0.78;
 
-      const baseWidth = 1920;
-      const baseHeight = 1080;
+  app.style.transform = `scale(${scale})`;
+  app.style.transformOrigin = "top left";
 
-      const scaleX = screenWidth / baseWidth;
-      const scaleY = screenHeight / baseHeight;
-      const scale = Math.min(scaleX, scaleY) * 0.968;
+  // 🔥 centrage propre
+  const screenWidth = window.innerWidth;
+  const screenHeight = window.innerHeight;
 
-      app.style.transform = `scale(${scale})`;
-      app.style.transformOrigin = "top left";
+  const offsetX = (screenWidth - 1920 * scale) / 2;
+  const offsetY = (screenHeight - 1080 * scale) / 2;
 
-      const offsetX = (screenWidth - baseWidth * scale) / 2;
-      const offsetY = (screenHeight - baseHeight * scale) / 2;
-
-      app.style.left = offsetX + "px";
-      app.style.top = offsetY + "px";
-    }
+  app.style.left = offsetX + "px";
+  app.style.top = offsetY + "px";
+}
 
     async function initApp() {
       scaleTV();
