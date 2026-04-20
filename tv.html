@@ -27,25 +27,17 @@
     }
 
     .header-signature {
-  position: fixed;          /* 🔑 important */
-  top: 6px;
-  left: 10px;
-  right: auto;
-  text-align: left;
-
-  font-family: "Comfortaa", sans-serif;
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.4px;
-
-  color: rgba(0, 0, 0, 1);
-  opacity: 0.95;
-
-  z-index: 40;              /* 🔑 AU-DESSUS calendarCell (30) */
-  pointer-events: none;
-  user-select: none;
-  white-space: nowrap;
-}
+      position: fixed;
+      top: 6px;
+      right: 10px;
+      font-size: 9px;
+      font-weight: 600;
+      color: rgba(0,0,0,1);
+      z-index: 40;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+    }
 
     .header {
       position: fixed;
@@ -444,7 +436,7 @@
 <body>
   <div id="app">
     <div class="header-signature">
-      © Design & System — Laurent Sampéré — TV TEST 777
+      © Design & System — Laurent Sampéré — TV CLEAN
     </div>
 
     <div class="header">
@@ -778,40 +770,51 @@
     }
 
     function scaleTV() {
-  const app = document.getElementById("app");
-  if (!app) return;
+      const app = document.getElementById("app");
+      if (!app) return;
 
-  const screenWidth = window.innerWidth;
-  const screenHeight = window.innerHeight;
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
 
-  const baseWidth = 1920;
-  const baseHeight = 1080;
+      const baseWidth = 1920;
+      const baseHeight = 1080;
 
-  const scaleX = screenWidth / baseWidth;
-  const scaleY = screenHeight / baseHeight;
+      const scaleX = screenWidth / baseWidth;
+      const scaleY = screenHeight / baseHeight;
+      const scale = Math.min(scaleX, scaleY) * 0.968;
 
-  // 🔥 CORRECTION TV
-  let correction = 0.85;
+      app.style.transform = `scale(${scale})`;
+      app.style.transformOrigin = "top left";
 
-  // 🔍 si petit écran (Mi Stick souvent)
-  if (screenWidth <= 1920) {
-    correction = 0.82;
-  }
+      const offsetX = (screenWidth - baseWidth * scale) / 2;
+      const offsetY = (screenHeight - baseHeight * scale) / 2;
 
-  const scale = Math.min(scaleX, scaleY) * correction;
+      app.style.left = offsetX + "px";
+      app.style.top = offsetY + "px";
+    }
 
-  app.style.transform = `scale(${scale})`;
-  app.style.transformOrigin = "top left";
+    async function initApp() {
+      scaleTV();
+      window.addEventListener("resize", scaleTV);
 
-  const offsetX = (screenWidth - baseWidth * scale) / 2;
-  const offsetY = (screenHeight - baseHeight * scale) / 2;
+      try {
+        if ('wakeLock' in navigator) {
+          await navigator.wakeLock.request('screen');
+        }
+      } catch(e) {}
 
-  app.style.position = "absolute";
-  app.style.left = offsetX + "px";
-  app.style.top = offsetY + "px";
+      setTimeout(loadWeek, 300);
 
-  console.log("TV SCALE =", scale, "| screen =", screenWidth, screenHeight);
-}
+      setInterval(() => {
+        loadWeek();
+      }, 30000);
+
+      setInterval(() => {
+        location.reload();
+      }, 1000 * 60 * 30);
+    }
+
+    window.addEventListener("load", initApp);
   </script>
 </body>
 </html>
