@@ -787,27 +787,30 @@
   const baseWidth = 1920;
   const baseHeight = 1080;
 
-  // ✅ scale de base
   const scaleX = screenWidth / baseWidth;
   const scaleY = screenHeight / baseHeight;
 
-  // ✅ dézoom supplémentaire forcé pour TV
-  const extraZoomOut = 0.78;
+  // 🔥 CORRECTION TV
+  let correction = 0.85;
 
-  const scale = Math.min(scaleX, scaleY) * extraZoomOut;
+  // 🔍 si petit écran (Mi Stick souvent)
+  if (screenWidth <= 1920) {
+    correction = 0.82;
+  }
 
-  app.style.position = "absolute";
+  const scale = Math.min(scaleX, scaleY) * correction;
+
   app.style.transform = `scale(${scale})`;
   app.style.transformOrigin = "top left";
 
   const offsetX = (screenWidth - baseWidth * scale) / 2;
   const offsetY = (screenHeight - baseHeight * scale) / 2;
 
+  app.style.position = "absolute";
   app.style.left = offsetX + "px";
   app.style.top = offsetY + "px";
 
-  console.log("TV SCALE =", scale);
-  console.log("SCREEN =", screenWidth, "x", screenHeight);
+  console.log("TV SCALE =", scale, "| screen =", screenWidth, screenHeight);
 }
   </script>
 </body>
