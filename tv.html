@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1920, initial-scale=1" />
+  <title>DUNE MALTA WALLBOARD TV</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #eef2f5;
+      font-family: "Comfortaa", sans-serif;
+    }
+
+    #app {
+      width: 1920px;
+      height: 1080px;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .header-signature {
+      position: fixed;
+      top: 6px;
+      right: 10px;
+      font-size: 9px;
+      font-weight: 600;
+      color: rgba(0,0,0,1);
+      z-index: 40;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 90px;
+      background: #004f7c;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+    }
+
+    .header-center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      font-size: 34px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    #title {
+      white-space: nowrap;
+    }
+
+    .logo {
+      height: 60px;
+      animation: coinFlip 10s linear infinite;
+    }
+
+    .pirateImg {
+      width: 70px;
+      height: auto;
+      margin-left: 6px;
+      animation: pirateFloat 6s ease-in-out infinite;
+      filter: drop-shadow(0 0 6px rgba(114, 202, 255, 0.55));
+    }
+
+    @keyframes coinFlip {
+      0% { transform: rotateY(0deg); }
+      50% { transform: rotateY(180deg); }
+      100% { transform: rotateY(360deg); }
+    }
+
+    @keyframes pirateFloat {
+      0%   { transform: translateY(0) rotate(0deg); }
+      25%  { transform: translateY(-3px) rotate(-2deg); }
+      50%  { transform: translateY(2px) rotate(2deg); }
+      75%  { transform: translateY(-1px) rotate(-1deg); }
+      100% { transform: translateY(0) rotate(0deg); }
+    }
+
+    .main {
+      position: absolute;
+      top: 90px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+
+    .grid {
+      display: grid;
+      width: 100%;
+      height: 100%;
+      grid-template-columns: 100px repeat(5, 1fr);
+      grid-template-rows:
+        64px
+        1fr
+        1fr
+        0.66fr
+        72px;
+    }
+
+    .dayHeader {
+      position: relative;
+      background: #003755;
+      color: white;
+      text-align: center;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 4px 0;
+      min-height: 56px;
+      border-right: 2px solid white;
+      border-bottom: 2px solid white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .dayHeader.day-today {
+      background: linear-gradient(180deg, #0f3f63 0%, #005f8f 100%);
+      box-shadow: inset 0 -3px 0 rgba(255,255,255,0.25);
+    }
+
+    .dayHeader.day-today::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 12%;
+      right: 12%;
+      height: 3px;
+      background: #ff9f1c;
+      border-radius: 3px;
+    }
+
+    .day-label-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .day-sky {
+      font-size: 0.95em;
+      line-height: 1;
+    }
+
+    .day-meteo {
+      font-size: 11px;
+      font-weight: 600;
+      color: #d6e6f2;
+      line-height: 1.05;
+      min-height: 16px;
+    }
+
+    .slotCell {
+      background: #E0E6EB;
+      color: #004f7c;
+      font-weight: 700;
+      font-size: 12px;
+      border-right: 2px solid #004f7c;
+      border-bottom: 2px solid #004f7c;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding-top: 2px;
+    }
+
+    .slotIcon {
+      font-size: 18px;
+      margin-bottom: 2px;
+      margin-right: 4px;
+    }
+
+    .cell {
+      background: #eef2f5;
+      padding: 4px;
+      border-right: 2px solid #004f7c;
+      border-bottom: 2px solid #004f7c;
+      overflow: hidden;
+      font-size: 12px;
+      position: relative;
+    }
+
+    .cell.day-today {
+      background: rgba(0,79,124,0.04);
+    }
+
+    .cell::after {
+      content: "";
+      position: absolute;
+      top: 10px;
+      bottom: 10px;
+      left: 50%;
+      width: 1px;
+      transform: translateX(-1px);
+      background: rgba(0,79,124,0.16);
+      border-radius: 2px;
+      pointer-events: none;
+    }
+
+    .columns {
+      display: flex;
+      gap: 8px;
+      height: 100%;
+    }
+
+    .col {
+      flex: 1 1 0;
+      min-width: 0;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .palanquee-sep {
+      height: 1px;
+      background: linear-gradient(
+        to right,
+        rgba(0,79,124,0.05),
+        rgba(0,79,124,0.25),
+        rgba(0,79,124,0.05)
+      );
+      margin: 6px -4px;
+      width: auto;
+    }
+
+    .palanquee {
+      position: relative;
+      padding-right: 6px;
+      margin-bottom: 4px;
+    }
+
+    .training-block {
+      background: rgba(0,79,124,0.06);
+      border-radius: 6px;
+      padding: 2px 3px 1px 3px;
+    }
+
+    .standard-block {
+      background: rgba(255,255,255,0.55);
+      border-radius: 6px;
+      padding: 2px 3px 1px 3px;
+    }
+
+    .block-compact {
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 2px 3px;
+      box-shadow: 0 4px 12px rgba(0,0,0,.07);
+      margin-bottom: 6px;
+    }
+
+    .site-line {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      text-align: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      margin: 1px 0 1px 0;
+      color: #003A63;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      white-space: normal;
+      overflow: visible;
+      line-height: 1.05;
+    }
+
+    .meta-line {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 4px;
+      margin: 0 0 1px 0;
+      padding: 0;
+      white-space: nowrap;
+    }
+
+    .meta.guide {
+      font-size: 12px;
+      font-weight: 700;
+      color: #003A63;
+      flex: 1;
+      text-align: left;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .meta.vehicle {
+      font-size: 8px;
+      font-weight: 600;
+      color: rgba(0,58,99,.45);
+      display: flex;
+      align-items: center;
+      gap: 1px;
+      max-width: 42%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .meta.vehicle .vehicle-icon {
+      font-size: 9px;
+      line-height: 1;
+      position: relative;
+      top: -0.5px;
+    }
+
+    .meta.vehicle .vehicle-label {
+      max-width: 32px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .meta.vehicle .vehicle-cap {
+      flex-shrink: 0;
+      flex: 0 0 auto;
+      font-size: 8px;
+      font-weight: 700;
+      padding: 0px 4px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+
+    .activity-line-compact {
+      font-size: 12px;
+      font-weight: 700;
+      color: #003A63;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 4px;
+      margin-top: 1px;
+    }
+
+    .activity-cap {
+      margin-left: auto;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 10px;
+      white-space: nowrap;
+    }
+
+    .participant {
+      display: flex;
+      align-items: baseline;
+      gap: 0px;
+      margin-left: 2px;
+      font-size: 11px;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .participant::before {
+      content: "•";
+      margin-right: 4px;
+      color: rgba(0,79,124,.35);
+    }
+
+    .participant .p-name {
+      font-weight: 600;
+      color: #003a63;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .participant .p-meta {
+      display: inline-flex;
+      gap: 0px;
+      margin-left: auto;
+      padding-left: 1px;
+      font-family: monospace;
+      font-size: 7.5px;
+      color: rgba(0,58,99,0.6);
+      white-space: nowrap;
+    }
+
+    .participant .p-level,
+    .participant .p-lang {
+      font-size: 9px;
+      font-weight: 600;
+      opacity: 0.85;
+    }
+
+    .participant .p-level {
+      min-width: 28px;
+      text-align: right;
+      color: #003a63;
+    }
+
+    .participant .p-lang {
+      min-width: 20px;
+      text-align: right;
+      color: rgba(0,58,99,0.55);
+    }
+
+    .cap-green  { background: rgba(0,150,0,.18); color: #0b5f0b; }
+    .cap-orange { background: rgba(255,165,0,.22); color: #8a4b00; }
+    .cap-red    { background: rgba(200,0,0,.22); color: #7a0000; }
+
+    .more {
+      font-size: 10px;
+      opacity: .7;
+      margin-top: 2px;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="header-signature">
+      © Design & System — Laurent Sampéré — TV CLEAN
+    </div>
+
+    <div class="header">
+      <div class="header-center">
+        <img class="logo" src="https://i.ibb.co/QjDH0qKx/DUNE-Malta-LOGO.png" alt="DUNE Malta" />
+        <span id="title">Loading…</span>
+        <img class="pirateImg" src="https://i.ibb.co/PRsjQpQ/pirate-diver-no-outer-white.png" alt="Pirate Diver" />
+      </div>
+    </div>
+
+    <div class="main">
+      <div id="grid" class="grid"></div>
+    </div>
+  </div>
+
+  <script>
+    const DATA_URL = "https://script.google.com/macros/s/AKfycbxf4qR_wub5P5N3bnLlqu-y6hYiJExeRvoH4OtaisuLo9t4P2lmVoZjhMhRqGGpJG9NPA/exec?page=DATA_WALLBOARD";
+
+    let currentBaseDate = null;
+    let meteoCacheByDate = {};
+    let lastMeteoDate = null;
+    let isLoading = false;
+    let lastGoodData = null;
+
+    function toISODate_(d){
+      const x = new Date(d);
+      x.setHours(12,0,0,0);
+      return x.toISOString().slice(0,10);
+    }
+
+    function dayLabelEN(dateStr){
+      const d = new Date(dateStr);
+      return d.toLocaleDateString("en-GB", {
+        weekday: "short",
+        day: "2-digit",
+        month: "2-digit"
+      }).toUpperCase();
+    }
+
+    function isToday_(dateStr) {
+      const now = new Date();
+      now.setHours(12,0,0,0);
+      const todayStr = now.toISOString().slice(0,10);
+      return String(dateStr).slice(0,10) === todayStr;
+    }
+
+    function shorten(n){
+      if(!n) return "";
+      n = String(n).trim();
+      const p = n.split(" ");
+      if(p.length < 2) return n;
+      return p[0] + " " + p[1][0].toUpperCase() + ".";
+    }
+
+    function getSlotIcon(s){
+      return {
+        "MORNING-1":"🌅",
+        "MORNING-2":"🌞",
+        "AFTERNOON":"🌤️",
+        "NIGHT":"🌙"
+      }[s] || "•";
+    }
+
+    function slotLabel(slot){
+      return {
+        "MORNING-1": "MORNING 1",
+        "MORNING-2": "MORNING 2",
+        "AFTERNOON": "AFTERNOON",
+        "NIGHT": "NIGHT"
+      }[slot] || slot;
+    }
+
+    function levelShort(level){
+      const L = String(level||"").trim().toUpperCase();
+      if(!L) return "";
+      return L;
+    }
+
+    function langShort(lang){
+      const x = String(lang||"").trim().toUpperCase();
+      if(!x) return "";
+      return x.slice(0,2);
+    }
+
+    function participantLine(p) {
+      if (typeof p === "string") {
+        return `<span class="p-name">${shorten(p)}</span>`;
+      }
+
+      const name = shorten(p.name || "");
+      const lev = p.level === "?" ? "?" : levelShort(p.level || "");
+      const lang = langShort(p.lang || "");
+
+      return `
+        <span class="p-name">${name}</span>
+        <span class="p-meta">
+          <span class="p-level">${lev}</span>
+          <span class="p-lang">${lang}</span>
+        </span>
+      `;
+    }
+
+    function isTrainingActivity_(activity) {
+      if (!activity) return false;
+      const a = activity.toUpperCase();
+      return (
+        a.includes("TRY") ||
+        a.includes(" OW") ||
+        a.includes("AOW") ||
+        a.includes("CONF") ||
+        a.includes("COURSE")
+      );
+    }
+
+    function buildBalancedColumns(blocks){
+      function estimateHeight(b){
+        let base = 35;
+        base += (b.participants ? b.participants.length : 0) * 16;
+        return base;
+      }
+
+      const sortedBlocks = blocks.slice().sort((a, b) => {
+        const aTrain = isTrainingActivity_(a.activity);
+        const bTrain = isTrainingActivity_(b.activity);
+
+        if (aTrain && !bTrain) return -1;
+        if (!aTrain && bTrain) return 1;
+
+        return estimateHeight(b) - estimateHeight(a);
+      });
+
+      const colA = [], colB = [];
+      let hA = 0, hB = 0;
+
+      sortedBlocks.forEach(b => {
+        const h = estimateHeight(b);
+        if (hA <= hB) { colA.push(b); hA += h; }
+        else { colB.push(b); hB += h; }
+      });
+
+      let html = `<div class="columns">`;
+
+      [colA, colB].forEach(list => {
+        html += `<div class="col">`;
+
+        list.forEach((b, idx) => {
+          const activity = b.activity || "";
+          const site = b.site || "UNKNOWN";
+          const guide = b.guide || "";
+          const isTraining = isTrainingActivity_(activity);
+          const blockClass = isTraining ? "training-block" : "standard-block";
+
+          html += `<div class="palanquee ${blockClass}">`;
+
+          html += `
+            <div class="block-compact">
+              <div class="site-line">📍 ${site}</div>
+
+              <div class="meta-line">
+                <div class="meta guide">👤 ${guide}</div>
+
+                ${b.vehicle ? `
+                  <span class="meta vehicle">
+                    <span class="vehicle-icon">${b.vehicle.type === "BOAT" ? "🚤" : "🚐"}</span>
+                    <span class="vehicle-label">${b.vehicle.label}</span>
+                    <span class="vehicle-cap ${
+                      b.vehicle.remaining <= 0 ? "cap-red" :
+                      b.vehicle.remaining === 1 ? "cap-orange" : "cap-green"
+                    }">${b.vehicle.used}/${b.vehicle.max}</span>
+                  </span>
+                ` : ``}
+              </div>
+
+              <div class="activity-line-compact">
+                🤿 ${activity}
+                ${b.capacity ? `
+                  <span class="activity-cap ${
+                    b.capacity.available <= 0 ? "cap-red" :
+                    b.capacity.available === 1 ? "cap-orange" : "cap-green"
+                  }">
+                    ${b.capacity.current}/${b.capacity.max}
+                  </span>
+                ` : ``}
+              </div>
+            </div>
+          `;
+
+          (b.participants || []).forEach(p => {
+            html += `<div class="participant">${participantLine(p)}</div>`;
+          });
+
+          html += `</div>`;
+
+          if (idx < list.length - 1) {
+            html += `<div class="palanquee-sep"></div>`;
+          }
+        });
+
+        html += `</div>`;
+      });
+
+      html += `</div>`;
+      return html;
+    }
+
+    function applyMeteo(arr){
+      if (!arr || !arr.length) return;
+
+      arr.forEach((m,i)=>{
+        const skyEl   = document.getElementById("sky-"+i);
+        const meteoEl = document.getElementById("meteo-"+i);
+
+        if (skyEl) skyEl.textContent = m.sky || "";
+        if (meteoEl) meteoEl.innerHTML =
+          `🌡️ ${m.air}°  🌊 ${m.sea}°  💨 ${m.wind}  👁️ ${m.vis}`;
+      });
+    }
+
+    async function refreshWeather(){
+      const baseDate = window.__wallboardStartDate;
+      if (!baseDate) return;
+
+      if (lastMeteoDate === baseDate && meteoCacheByDate[baseDate]) {
+        applyMeteo(meteoCacheByDate[baseDate]);
+        return;
+      }
+
+      lastMeteoDate = baseDate;
+
+      try {
+        const arr = [];
+        meteoCacheByDate[baseDate] = arr;
+        applyMeteo(arr);
+      } catch (e) {
+        console.error("WEATHER ERROR", e);
+      }
+    }
+
+    function renderWeek(data){
+      const baseStr = toISODate_(currentBaseDate);
+      let startIndex = data.days.findIndex(d => d.date === baseStr);
+      if (startIndex < 0) startIndex = 0;
+
+      const visibleDays = data.days.slice(startIndex, startIndex + 5);
+      window.__wallboardStartDate = visibleDays[0].date;
+
+      document.getElementById("title").textContent =
+        "PLANNING — " +
+        dayLabelEN(visibleDays[0].date) +
+        " → " +
+        dayLabelEN(visibleDays[visibleDays.length - 1].date);
+
+      const SLOTS = ["MORNING-1","MORNING-2","AFTERNOON","NIGHT"];
+      const grid = document.getElementById("grid");
+      let html = "";
+
+      html += `<div></div>`;
+
+      visibleDays.forEach((day, dayIndex) => {
+        const todayClass = isToday_(day.date) ? "day-today" : "";
+        html += `<div class="dayHeader ${todayClass}">
+          <div class="day-label-row">
+            ${dayLabelEN(day.date)}
+            <span class="day-sky" id="sky-${dayIndex}"></span>
+          </div>
+          <div class="day-meteo" id="meteo-${dayIndex}"></div>
+        </div>`;
+      });
+
+      SLOTS.forEach(slot => {
+        html += `
+          <div class="slotCell">
+            <div class="slotIcon">${getSlotIcon(slot)}</div>
+            ${slotLabel(slot)}
+          </div>
+        `;
+
+        visibleDays.forEach(day => {
+          const todayClass = isToday_(day.date) ? "day-today" : "";
+          const s = day.slots.find(x => x.slot === slot);
+
+          if (!s || !s.blocks.length) {
+            html += `<div class="cell ${todayClass}"></div>`;
+            return;
+          }
+
+          html += `<div class="cell ${todayClass}">
+            ${buildBalancedColumns(s.blocks)}
+          </div>`;
+        });
+      });
+
+      grid.innerHTML = html;
+      refreshWeather();
+    }
+
+    async function loadWeek(){
+      if (isLoading) return;
+      isLoading = true;
+
+      if (!currentBaseDate) {
+        const today = new Date();
+        today.setHours(12,0,0,0);
+        currentBaseDate = today;
+      }
+
+      const iso = toISODate_(currentBaseDate);
+      const url = `${DATA_URL}&date=${iso}&t=${Date.now()}`;
+
+      try {
+        const res = await fetch(url, {
+          method: "GET",
+          cache: "no-store"
+        });
+
+        const text = await res.text();
+        const data = JSON.parse(text);
+
+        if (data && data.days && data.days.length) {
+          lastGoodData = data;
+          renderWeek(data);
+        } else if (lastGoodData) {
+          renderWeek(lastGoodData);
+        }
+      } catch (err) {
+        console.error("FETCH ERROR", err);
+        if (lastGoodData) renderWeek(lastGoodData);
+      }
+
+      isLoading = false;
+    }
+
+    function scaleTV() {
+      const app = document.getElementById("app");
+      if (!app) return;
+
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
+
+      const baseWidth = 1920;
+      const baseHeight = 1080;
+
+      const scaleX = screenWidth / baseWidth;
+      const scaleY = screenHeight / baseHeight;
+      const scale = Math.min(scaleX, scaleY) * 0.968;
+
+      app.style.transform = `scale(${scale})`;
+      app.style.transformOrigin = "top left";
+
+      const offsetX = (screenWidth - baseWidth * scale) / 2;
+      const offsetY = (screenHeight - baseHeight * scale) / 2;
+
+      app.style.left = offsetX + "px";
+      app.style.top = offsetY + "px";
+    }
+
+    async function initApp() {
+      scaleTV();
+      window.addEventListener("resize", scaleTV);
+
+      try {
+        if ('wakeLock' in navigator) {
+          await navigator.wakeLock.request('screen');
+        }
+      } catch(e) {}
+
+      setTimeout(loadWeek, 300);
+
+      setInterval(() => {
+        loadWeek();
+      }, 30000);
+
+      setInterval(() => {
+        location.reload();
+      }, 1000 * 60 * 30);
+    }
+
+    window.addEventListener("load", initApp);
+  </script>
+</body>
+</html>
