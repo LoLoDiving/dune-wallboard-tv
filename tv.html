@@ -748,9 +748,14 @@
 
       try {
         const res = await fetch(url, {
-          method: "GET",
-          cache: "no-store"
-        });
+  method: "GET",
+  cache: "no-store",
+  headers: {
+    "Cache-Control": "no-cache, no-store, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "0"
+  }
+});
 
         const text = await res.text();
         const data = JSON.parse(text);
@@ -804,7 +809,7 @@
 
       setInterval(() => {
         loadWeek();
-      }, 30000);
+      }, 5000);
 
       setInterval(() => {
         location.reload();
