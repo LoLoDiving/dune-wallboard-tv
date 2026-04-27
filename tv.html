@@ -655,25 +655,7 @@
       });
     }
 
-    async function refreshWeather(){
-      const baseDate = window.__wallboardStartDate;
-      if (!baseDate) return;
-
-      if (lastMeteoDate === baseDate && meteoCacheByDate[baseDate]) {
-        applyMeteo(meteoCacheByDate[baseDate]);
-        return;
-      }
-
-      lastMeteoDate = baseDate;
-
-      try {
-        const arr = [];
-        meteoCacheByDate[baseDate] = arr;
-        applyMeteo(arr);
-      } catch (e) {
-        console.error("WEATHER ERROR", e);
-      }
-    }
+    
 
     function renderWeek(data){
       const baseStr = toISODate_(currentBaseDate);
@@ -730,7 +712,9 @@
       });
 
       grid.innerHTML = html;
-      refreshWeather();
+      if (data.meteo) {
+  applyMeteo(data.meteo);
+}
     }
 
     async function loadWeek(){
