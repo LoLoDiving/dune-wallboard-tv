@@ -712,52 +712,50 @@
       });
 
       grid.innerHTML = html;
-      if (data.meteo) {
-  applyMeteo(data.meteo);
-}
-    }
+      }
 
     async function loadWeek(){
-      if (isLoading) return;
-      isLoading = true;
+  if (isLoading) return;
+  isLoading = true;
 
-      if (!currentBaseDate) {
-        const today = new Date();
-        today.setHours(12,0,0,0);
-        currentBaseDate = today;
-      }
-
-      const iso = toISODate_(currentBaseDate);
-      const url = `${DATA_URL}&date=${iso}&t=${Date.now()}`;
-
-      try {
-        const res = await fetch(url, {
-          method: "GET",
-          cache: "no-store"
-        });
-
-        const text = await res.text();
-        const data = JSON.parse(text);
-
-        if (data && data.days && data.days.length) {
-  lastGoodData = data;
-  renderWeek(data);
-
-  // 🔥 AJOUT CRITIQUE
-  if (data.meteo) {
-    applyMeteo(data.meteo);
+  if (!currentBaseDate) {
+    const today = new Date();
+    today.setHours(12,0,0,0);
+    currentBaseDate = today;
   }
-}
-        } else if (lastGoodData) {
-          renderWeek(lastGoodData);
-        }
-      } catch (err) {
-        console.error("FETCH ERROR", err);
-        if (lastGoodData) renderWeek(lastGoodData);
+
+  const iso = toISODate_(currentBaseDate);
+  const url = `${DATA_URL}&date=${iso}&t=${Date.now()}`;
+
+  try {
+    const res = await fetch(url, {
+      method: "GET",
+      cache: "no-store"
+    });
+
+    const text = await res.text();
+    const data = JSON.parse(text);
+
+    if (data && data.days && data.days.length) {
+      lastGoodData = data;
+      renderWeek(data);
+
+      // météo
+      if (data.meteo) {
+        applyMeteo(data.meteo);
       }
 
-      isLoading = false;
+    } else if (lastGoodData) {
+      renderWeek(lastGoodData);
     }
+
+  } catch (err) {
+    console.error("FETCH ERROR", err);
+    if (lastGoodData) renderWeek(lastGoodData);
+  }
+
+  isLoading = false;
+}
 
     function scaleTV() {
   const app = document.getElementById("app");
