@@ -2,6 +2,8 @@
 (() => {
  const endpoint='https://script.google.com/macros/s/AKfycbzruM3eVQVDvBd9QpTm4Cr0y7FJCK-rHcqHKSRzozVpBgNewxGzfucaqbTaXucCCO0K/exec';
  const protocol='DIVEOPS_TV_BRIDGE_V1';
+ const hint=new URLSearchParams(location.search).get('account');
+ const account=['laurent.sampere@dune-world.com','info.malta@dune-world.com'].includes(hint)?hint:null;
  let frame,channel,peer,peerOrigin,readyPromise,readyResolve,readyReject,readyTimer,pending,nextId=0,queue=Promise.resolve(),failures=0,nextAttempt=0;
  const status=text=>{let el=document.getElementById('bridge-status');if(!el){el=document.createElement('div');el.id='bridge-status';el.style.cssText='position:fixed;bottom:0;left:0;z-index:99999;background:#fff;color:#123;padding:6px;font:14px sans-serif';document.body.appendChild(el);}el.textContent='RG1 SPIKE — '+text;};
  const reset=()=>{clearTimeout(readyTimer);if(frame)frame.remove();frame=null;peer=null;peerOrigin=null;readyPromise=null;};
@@ -18,7 +20,7 @@
  window.addEventListener('message',event=>{
   const m=event.data;if(!m||m.protocol!==protocol||m.channel!==channel||!frame)return;
   if(m.kind==='ready'){
-   let belongs=false;try{belongs=event.source!==frame.contentWindow&&event.source.parent===frame.contentWindow;}catch(_){}
+   let belongs=false;try{belongs=event.source!==frame.contentWindow&&event.source.parent.parent===frame.contentWindow;}catch(_){}
    if(!belongs||!/^https:\/\/[a-z0-9-]+-script\.googleusercontent\.com$/.test(event.origin)){status('BRIDGE_SOURCE_REJECTED');return;}
    if(peer&&(peer!==event.source||peerOrigin!==event.origin))return;
    peer=event.source;peerOrigin=event.origin;clearTimeout(readyTimer);status('authenticated bridge ready');readyResolve();return;

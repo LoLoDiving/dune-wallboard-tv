@@ -779,7 +779,7 @@
 
       try {
         if ('wakeLock' in navigator) {
-          await navigator.wakeLock.request('screen');
+          navigator.wakeLock.request('screen').catch(() => {});
         }
       } catch(e) {}
 
@@ -792,7 +792,7 @@
       // Recovery is bridge-only; never destroy the visible last-good render.
     }
 
-    window.addEventListener("load", initApp);
+    window.addEventListener("DOMContentLoaded", initApp);
   </script>
 </body>
 </html>
