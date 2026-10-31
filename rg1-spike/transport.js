@@ -35,7 +35,7 @@
  });
  async function request(operation,date){
   if(!['wallboard','daily'].includes(operation)||!/^\d{4}-\d{2}-\d{2}$/.test(date))throw Error('INVALID_REQUEST');
-  await start();return new Promise((resolve,reject)=>{const id=++nextId;pending={id,operation,resolve,reject,timer:setTimeout(()=>{pending=null;reset();fail('RPC_TIMEOUT');reject(new Error('RPC_TIMEOUT'));},20000)};peer.postMessage({protocol,channel,kind:'request',id,operation,date},peerOrigin);});
+  await start();return new Promise((resolve,reject)=>{const id=++nextId;pending={id,operation,resolve,reject,timer:setTimeout(()=>{pending=null;reset();fail('RPC_TIMEOUT');reject(new Error('RPC_TIMEOUT'));},120000)};peer.postMessage({protocol,channel,kind:'request',id,operation,date},peerOrigin);});
  }
  window.DiveOpsTvBridge=Object.freeze({request(operation,date){const task=queue.then(()=>request(operation,date));queue=task.catch(()=>{});return task;}});
 })();
