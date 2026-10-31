@@ -13,7 +13,7 @@
   if(Date.now()<nextAttempt)return Promise.reject(new Error('BRIDGE_BACKOFF'));
   channel=Array.from(crypto.getRandomValues(new Uint8Array(16)),n=>n.toString(16).padStart(2,'0')).join('');
   readyPromise=new Promise((resolve,reject)=>{readyResolve=resolve;readyReject=reject;});
-  frame=document.createElement('iframe');frame.title='DIVEOPS authenticated transport';frame.setAttribute('aria-hidden','true');frame.style.cssText='position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;border:0';frame.src=endpoint+'?page=TV_TRANSPORT_BRIDGE&channel='+channel;document.body.appendChild(frame);status('waiting for authenticated bridge');
+  frame=document.createElement('iframe');frame.title='DIVEOPS authenticated transport';frame.setAttribute('aria-hidden','true');frame.style.cssText='position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;border:0';frame.src=endpoint+'?page=TV_TRANSPORT_BRIDGE&channel='+channel+(account?'&authuser='+encodeURIComponent(account):'');document.body.appendChild(frame);status('waiting for authenticated bridge');
   readyTimer=setTimeout(()=>{const reject=readyReject;reset();fail('BRIDGE_AUTH_OR_LOAD_TIMEOUT');reject(new Error('BRIDGE_AUTH_OR_LOAD_TIMEOUT'));},25000);
   return readyPromise;
  }
